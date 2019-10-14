@@ -45,4 +45,4 @@ if __name__=='__main__':
 	adjClose=df["Adj Close"].values	# Get adj close as the price vector
 	stockType=sys.argv[1][-7:-4]		# Get stock type
 	rr=computeReturnRate(adjClose, stockType)	# Compute return rate
-	print("rr=%f" %(rr))
+	print(stockType,"rr=%f" %(rr))

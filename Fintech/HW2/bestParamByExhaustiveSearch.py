@@ -3,9 +3,41 @@ import numpy as np
 import pandas as pd
 
 # Decision of the current day by the current price, with 3 modifiable parameters
+
 def myStrategy(pastPriceVec, currentPrice, windowSize, alpha, beta):
+	# Explanation of my approach:
+	# 1. Technical indicator used: MA
+	# 2. if price-ma>alpha ==> buy
+	#    if price-ma<-beta ==> sell
+	# 3. Modifiable parameters: alpha, beta, and window size for MA
+	# 4. Use exhaustive search to obtain these parameter values (as shown in bestParamByExhaustiveSearch.py)
+	
 	import numpy as np
+	# stockType='SPY', 'IAU', 'LQD', 'DSI'
+	# Set parameters for different stocks
+    
+	paramSetting={'SPY': {'alpha':6, 'beta':16, 'windowSize':4},
+					'IAU': {'alpha':0, 'beta':2, 'windowSize':26},
+					'LQD': {'alpha':0, 'beta':1, 'windowSize':5},
+					'DSI': {'alpha':2, 'beta':10, 'windowSize':17}}
+
 	action=0		# action=1(buy), -1(sell), 0(hold), with 0 as the default action
+	dataLen=len(pastPriceVec)		# Length of the data vector
+	if dataLen==0: 
+		return action
+	# Compute MA
+	if dataLen<windowSize:
+		ma=np.mean(pastPriceVec)	# If given price vector is small than windowSize, compute MA by taking the average
+	else:
+		windowedData=pastPriceVec[-windowSize:]		# Compute the normal MA using windowSize 
+		ma=np.mean(windowedData)
+	# Determine action
+	if (currentPrice-ma)>alpha:		# If price-ma > alpha ==> buy
+		action=1
+	elif (currentPrice-ma)<-beta:	# If price-ma < -beta ==> sell
+		action=-1
+
+	return action
 	dataLen=len(pastPriceVec)		# Length of the data vector
 	if dataLen==0:
 		return action
@@ -60,9 +92,9 @@ if __name__=='__main__':
 	returnRateBest=-1.00	 # Initial best return rate
 	df=pd.read_csv(sys.argv[1])	# read stock file
 	adjClose=df["Adj Close"].values		# get adj close as the price vector
-	windowSizeMin=3; windowSizeMax=6;	# Range of windowSize to explore
-	alphaMin=5; alphaMax=10;			# Range of alpha to explore
-	betaMin=13; betaMax=18				# Range of beta to explore
+	windowSizeMin=3; windowSizeMax=30;	# Range of windowSize to explore
+	alphaMin=0; alphaMax=10;			# Range of alpha to explore
+	betaMin=0; betaMax=18				# Range of beta to explore
 	# Start exhaustive search
 	for windowSize in range(windowSizeMin, windowSizeMax+1):		# For-loop for windowSize
 		print("windowSize=%d" %(windowSize))

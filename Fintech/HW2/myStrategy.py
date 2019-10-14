@@ -1,36 +1,50 @@
 def myStrategy(pastPriceVec, currentPrice, stockType):
 	# Explanation of my approach:
-	# 1. Technical indicator used: MA
-	# 2. if price-ma>alpha ==> buy
-	#    if price-ma<-beta ==> sell
-	# 3. Modifiable parameters: alpha, beta, and window size for MA
+	# 1. Technical indicator used: RSI
+	# 2. if 50 < RSI < high or RSI < low ==> buy
+	#    if 50 > RSI > low or RSI > high ==> sell
+	# 3. Modifiable parameters: high, low, and window size for RSI
+	#    (in course PPT high is fixed to 80 and low is fixed to 20)
 	# 4. Use exhaustive search to obtain these parameter values (as shown in bestParamByExhaustiveSearch.py)
-	
+	#    range of exhaustive search is : 5 < window size < 20, 60 < high < 90, 10 < low < 40
 	import numpy as np
 	# stockType='SPY', 'IAU', 'LQD', 'DSI'
 	# Set parameters for different stocks
-	paramSetting={'SPY': {'alpha':6, 'beta':16, 'windowSize':4},
-					'IAU': {'alpha':0, 'beta':2, 'windowSize':26},
-					'LQD': {'alpha':0, 'beta':1, 'windowSize':5},
-					'DSI': {'alpha':2, 'beta':10, 'windowSize':17}}
-	windowSize=paramSetting[stockType]['windowSize']
-	alpha=paramSetting[stockType]['alpha']
-	beta=paramSetting[stockType]['beta']
+	paramSetting={'SPY': {'high':87, 'low':40, 'windowSize':20},
+					'IAU': {'high':90, 'low':11, 'windowSize':7},
+					'LQD': {'high':90, 'low':24, 'windowSize':14},
+					'DSI': {'high':85, 'low':39, 'windowSize':20}}
+	windowSize = paramSetting[stockType]['windowSize']
+	high = paramSetting[stockType]['high']
+	low = paramSetting[stockType]['low']
 	
-	action=0		# action=1(buy), -1(sell), 0(hold), with 0 as the default action
-	dataLen=len(pastPriceVec)		# Length of the data vector
-	if dataLen==0: 
-		return action
-	# Compute MA
-	if dataLen<windowSize:
-		ma=np.mean(pastPriceVec)	# If given price vector is small than windowSize, compute MA by taking the average
+	action = 0
+	dataLen = len(pastPriceVec)
+	if dataLen == 0:
+		return 0
+    
+	if dataLen < windowSize:
+		windowSize = dataLen
+	rsi = RSI(pastPriceVec, windowSize)
+	if 50 < rsi < high or rsi < low:
+		action = 1
+	elif low < rsi < 50 or rsi > high:
+		action = -1
 	else:
-		windowedData=pastPriceVec[-windowSize:]		# Compute the normal MA using windowSize 
-		ma=np.mean(windowedData)
-	# Determine action
-	if (currentPrice-ma)>alpha:		# If price-ma > alpha ==> buy
-		action=1
-	elif (currentPrice-ma)<-beta:	# If price-ma < -beta ==> sell
-		action=-1
-
+		action = 0
 	return action
+
+def RSI(pastPriceVec, windowSize):
+	import numpy as np
+	up_down = np.zeros(windowSize)
+	for i in range(1,windowSize):
+		up_down[i] = pastPriceVec[-windowSize + i] - pastPriceVec[-windowSize + i - 1]
+	rsi = up = down = 0
+	for i in up_down:
+		if i > 0:
+			up += i
+		else:
+			down -= i
+	if up + down != 0:
+		rsi = up/(up + down) * 100
+	return rsi
