@@ -6,14 +6,14 @@ def myStrategy(pastPriceVec, currentPrice, stockType):
 	# 3. Modifiable parameters: high, low, and window size for RSI
 	#    (in course PPT high is fixed to 80 and low is fixed to 20)
 	# 4. Use exhaustive search to obtain these parameter values (as shown in bestParamByExhaustiveSearch.py)
-	#    range of exhaustive search is : 5 < window size < 20, 60 < high < 90, 10 < low < 40
+	#    range of exhaustive search is : 5 <= window size <= 30, 51 <= high <= 100, 0 <= low <= 49
 	import numpy as np
 	# stockType='SPY', 'IAU', 'LQD', 'DSI'
 	# Set parameters for different stocks
 	paramSetting={'SPY': {'high':87, 'low':40, 'windowSize':20},
-					'IAU': {'high':90, 'low':11, 'windowSize':7},
-					'LQD': {'high':90, 'low':24, 'windowSize':14},
-					'DSI': {'high':85, 'low':39, 'windowSize':20}}
+					'IAU': {'high':83, 'low':41, 'windowSize':25},
+					'LQD': {'high':98, 'low':44, 'windowSize':9},
+					'DSI': {'high':85, 'low':42, 'windowSize':20}}
 	windowSize = paramSetting[stockType]['windowSize']
 	high = paramSetting[stockType]['high']
 	low = paramSetting[stockType]['low']
@@ -22,7 +22,6 @@ def myStrategy(pastPriceVec, currentPrice, stockType):
 	dataLen = len(pastPriceVec)
 	if dataLen == 0:
 		return 0
-    
 	if dataLen < windowSize:
 		windowSize = dataLen
 	rsi = RSI(pastPriceVec, windowSize)
