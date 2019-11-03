@@ -13,7 +13,7 @@
 在 w_tmp 的一百次更新中，當 error rate 低於口袋內的 w_best 的 error rate （此處 error rate 是對於 hw1_7_train）才將 w_best 更新為 w_tmp。
 執行 1126 次，每次隨機排序輸入 dataset 的順序，紀錄每次得到的 w_best 的 error rate（對於hw1_7_test）
 繪成 histogram(橫軸為 error rate，縱軸是出現次數) 
-error rate 約為 0.114
+error rate 約為 0.114  
 
 第八題:PLA_nopocket.py
 實作 PLA 演算法，但因 dataset(hw1_7_train) 不是線性可分，
