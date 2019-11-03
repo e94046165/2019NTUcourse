@@ -1,0 +1,27 @@
+壓縮檔內包含3個 *.py 檔
+執行 python3 PLA.py 等可重現實驗結果(會 print 出平均更新次數、error rate 並生成 histogram 的 .png 檔)
+
+第六題:PLA.py
+實作 PLA 演算法，找出能完美分割 dataset(hw1_6_train)  weight 後停止
+重複執行 1126 次，每次隨機排序輸入 dataset 的順序，
+並紀錄各次 weight 被更新的次數，繪成 histogram(橫軸為更新次數，縱軸是出現次數) 
+平均更新次數為 40 次
+
+第七題:PLA_pocket.py
+實作 Pocket PLA 演算法，因 dataset(hw1_7_train) 不是線性可分，
+所以在有限的 weight 更新次數(100)下，找到 w_best 
+在 w_tmp 的一百次更新中，當 error rate 低於口袋內的 w_best 的 error rate （此處 error rate 是對於 hw1_7_train）才將 w_best 更新為 w_tmp。
+執行 1126 次，每次隨機排序輸入 dataset 的順序，紀錄每次得到的 w_best 的 error rate（對於hw1_7_test）
+繪成 histogram(橫軸為 error rate，縱軸是出現次數) 
+error rate 約為 0.114
+
+第八題:PLA_nopocket.py
+實作 PLA 演算法，但因 dataset(hw1_7_train) 不是線性可分，
+在不使用 pocket 演算法的情況下更新 weight 100 次，與第七題的結果做比較。
+error rate 約為 0.336
+發現不使用 pocket 的話 error rate 幾乎是使用 pocket 演算法的 3 倍
+可見每次 weight 更新不一定能得到更好的 weight
+若沒有使用 pocket 演算法，只給定一個固定的更新次數，可能會得到不好的效果
+但 pocket 演算法會使執行時間大幅增加，在 dataset 更大的時候可能也不是一個太好的演算法
+恐怕要在時間與表現上做出取捨。 
+
