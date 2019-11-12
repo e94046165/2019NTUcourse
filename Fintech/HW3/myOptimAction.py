@@ -14,10 +14,11 @@ def myOptimAction(priceMat, transFeeRate):
     # user definition
     nextDay = 1
     dataLen, stockCount = priceMat.shape  # day size & stock count   
+    print(priceMat.shape)
     stockHolding = np.zeros((dataLen,stockCount))  # Mat of stock holdings
     actionMat = []  # An k-by-4 action matrix which holds k transaction records.
     
-    for day in range( 0, dataLen-nextDay ) :
+    for day in range(0, dataLen-nextDay ) :
         dayPrices = priceMat[day]  # Today price of each stock
         nextDayPrices = priceMat[ day + nextDay ]  # Next day price of each stock
         
@@ -30,13 +31,13 @@ def myOptimAction(priceMat, transFeeRate):
         sellPrice = []  # get how much cash from sell
         bestPriceDiff = 0  # difference in today price & next day price of "buy" stock
         stockCurrentPrice = 0  # The current price of "buy" stock
-        
+        value = cash
         # Check next day price to "sell"
         for stock in range(stockCount) :
             todayPrice = dayPrices[stock]  # Today price
             nextDayPrice = nextDayPrices[stock]  # Next day price
             holding = stockHolding[day][stock]  # how much stock you are holding
-            
+            value += holding*todayPrice
             if holding > 0 :  # "sell" only when you have stock holding
                 if nextDayPrice < todayPrice*(1+transFeeRate) :  # next day price < today price, should "sell"
                     sellStock.append(stock)
@@ -52,7 +53,7 @@ def myOptimAction(priceMat, transFeeRate):
                 nextDayPrice = nextDayPrices[stock]  # Next day price
                 
                 if nextDayPrice > todayPrice*(1+transFeeRate) :  # next day price > today price, should "buy"
-                    diff = nextDayPrice - todayPrice*(1+transFeeRate)
+                    diff = (nextDayPrice - todayPrice*(1+transFeeRate))*(value*(1-transFeeRate) / todayPrice)
                     if diff > bestPriceDiff :  # this stock is better
                         bestPriceDiff = diff
                         buyStock = stock
@@ -74,5 +75,3 @@ def myOptimAction(priceMat, transFeeRate):
                 action = [day, -1, buyStock, buyPrice]
                 actionMat.append( action )
     return actionMat
-
-    

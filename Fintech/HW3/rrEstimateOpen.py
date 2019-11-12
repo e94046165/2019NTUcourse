@@ -48,6 +48,7 @@ def computeReturnRate(priceMat, transFeeRate, actionMat):
 				stockHolding[i][a] -= sellStock	 # Stocking holding
 				realAction[i] = -1
 			elif a >= 0 and b >= 0 and stockHolding[i][a] > 0 :  # Suggested action is "buy" and "sell"
+				print(action)
 				currentPriceSell = currentPriceVec[a]  # The current price of sell stock
 				currentPriceBuy = currentPriceVec[b]  # The current price of buy stock
 				sellStock = z / currentPriceSell
@@ -68,7 +69,6 @@ def computeReturnRate(priceMat, transFeeRate, actionMat):
 		currentPriceVec = priceMat[ actionMat[-1][0] ]
 		print(stockHolding[-1][stock])
 		total += stockHolding[-1][stock] * currentPriceVec[stock]*(1-transFeeRate)	# Total asset, including stock holding and cash 
-		
 	returnRate=(total-capitalOrig)/capitalOrig	# Return rate of this run
 	return returnRate
 	
