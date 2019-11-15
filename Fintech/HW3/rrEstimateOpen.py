@@ -23,7 +23,7 @@ def computeReturnRate(priceMat, transFeeRate, actionMat):
 		b = actionVec[2] # The index of "to" stock
 		z = actionVec[3] # The equivalent cash for such transaction.
 		currentPriceVec = priceMat[day]	 # current priceVec
-		
+		#print(actionVec)
 		# check action day
 		if day >= preDay and day >= 0 and z > 0 :
 			# get real action by suggested action
@@ -48,7 +48,7 @@ def computeReturnRate(priceMat, transFeeRate, actionMat):
 				stockHolding[i][a] -= sellStock	 # Stocking holding
 				realAction[i] = -1
 			elif a >= 0 and b >= 0 and stockHolding[i][a] > 0 :  # Suggested action is "buy" and "sell"
-				print(action)
+				#print(action)
 				currentPriceSell = currentPriceVec[a]  # The current price of sell stock
 				currentPriceBuy = currentPriceVec[b]  # The current price of buy stock
 				sellStock = z / currentPriceSell
