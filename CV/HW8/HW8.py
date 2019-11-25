@@ -12,7 +12,7 @@ def imshow(img):
     plt.imshow(img, cmap='Greys_r',vmin = 0, vmax = 255)
     plt.show()
 
-print(img.shape)
+#print(img.shape)
 
 
 # In[2]:
@@ -27,7 +27,7 @@ def gen_gaussianNoise(img, u, sig, amp):
                 img[i][j] = 255
             elif img[i][j] < 0:
                 img[i][j] = 0
-    return img + amp * np.random.normal(u, sig, img.shape)
+    return img
 
 
 # In[3]:
@@ -192,7 +192,7 @@ nor_img = normalize(img)
 print(getSNR(nor_img, normalize(median_5x5)))
 
 
-# In[15]:
+# In[13]:
 
 
 dict = {}
@@ -229,7 +229,6 @@ dict['median_filter_SAP01_5x5'] = median_filter_SAP01_5x5
 dict['oc_SAP01'] = oc_SAP01
 dict['co_SAP01'] = co_SAP01
 for i in dict:
-    #imshow(dict[i])
     print(i, 'SNR:', getSNR(nor_img, normalize(dict[i])))
     cv2.imwrite(i + ".bmp", dict[i])
 
