@@ -1,0 +1,4 @@
+壓縮檔內包含一個 hw2.py 檔與可用 Jupyter notebook 開啟的 hw2.ipynb 
+執行 python3 hw2.py 或用 Jupyter notebook 開啟 hw2.ipynb 可重現實驗結果。
+因為 Q8 部份執行時間比較久，我有將 Ein 與 Eout 輸出成 txt 檔，也一併附在壓縮檔中。
+(因我共做了兩次，不太確定數據是否與報告上的完全吻合，但是相差不遠）
